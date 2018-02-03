@@ -81,8 +81,12 @@ class PlayList extends Component {
     return (
       <div style={{...defaultStyle, width:"25%"}}>
         <img />
-        <h3>Playlist Name</h3>
-        <ul><li>Song 1</li> <li>Song 2</li> <li>Song 3</li></ul>
+        <h3>{this.props.playlist.name}</h3>
+        <ul>         
+          {this.props.playlist.songs.map((song)=>
+          <li>{song.name}</li>
+          )}          
+        </ul>
       </div>
     );
   }
@@ -97,11 +101,12 @@ class App extends Component {
  componentDidMount(){
    setTimeout(()=>{
   this.setState({serverData:fakeServerData});
-},5000
+},2000
 );
  }
 
   render() {
+    
     return (
       <div className="App">        
        {this.state.serverData.user ? 
@@ -113,11 +118,9 @@ class App extends Component {
           <PlayListCounter playlists={this.state.serverData.user.playlists}/>
           <HoursCounter playlists={this.state.serverData.user.playlists}/>
           <Filter/>
-          <PlayList/>
-          <PlayList/>
-          <PlayList/>
-          <PlayList/>
-          <PlayList/>
+          {this.state.serverData.user.playlists.map(playlist=>
+          <PlayList playlist={playlist}/>
+          )}
         </div>:<h1>loading...</h1>
        }
       </div>
